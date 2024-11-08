@@ -10,8 +10,8 @@ List of tools used in integration:
 - [MinIO s3 database](https://min.io/docs/minio/container/index.html)
 
 ## Runtime environment
-- docker
-- kubernetes
+- docker (Not described yet)
+- kubernetes (installation described in `Kubernetes-installation.md` file)
 
 
 ### Add argo endpoint to MinIO

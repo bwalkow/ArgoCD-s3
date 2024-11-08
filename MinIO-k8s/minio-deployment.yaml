@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+  namespace: argo
+  labels:
+    app: minio
+spec:
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+        - image: quay.io/minio/minio:latest
+          name: minio
+          command: [/bin/bash]
+          args: ["-c",  minio server /data --console-address :80]
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9000
+              name: minio-api
+            - containerPort: 80
+              name: minio-console
+          volumeMounts:
+          - name: minio-data
+            mountPath: /data
+          env:
+            - name: MINIO_ROOT_PASSWORD
+              value: "pass1234"
+            - name: MINIO_ROOT_USER
+              value: "admin"
+
+      restartPolicy: Always
+      volumes:
+        - name: minio-data
+          persistentVolumeClaim:
+            claimName: minio-data

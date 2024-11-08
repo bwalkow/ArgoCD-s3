@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-console
+  namespace: argo
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      name: minio-console
+  selector:
+    app: minio
