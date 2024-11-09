@@ -10,33 +10,45 @@ List of tools used in integration:
 - [MinIO s3 database](https://min.io/docs/minio/container/index.html)
 
 ## Runtime environment
-- docker (Not described yet)
 - kubernetes (installation described in `Kubernetes-installation.md` file)
 
 
+
 ### Add argo endpoint to MinIO
-Go to:
-1. Events 
-2. Event Destinations
-4. Add Webhook Event Destination like in example:
+- Run command:
+    ```shell
+    export MINIO_ROOT_USER=your_minio_root && export MINIO_ROOT_PASSWORD=your_minio_pass
     ```
-    ARN: argo-endpoint
-    Endpoint: http://argo-endpoint
-    Auth Token: your-authorization-token
+    ```shell
+    mc alias set myminio http://minio:9000 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD
     ```
-5. Save
+    ```shell
+    mc admin config set myminio notify_webhook:1 endpoint="http://argo-endpoint"
+    ```
+
+- Or use GUI, go to:
+    1. Events 
+    2. Event Destinations
+    4. Add Webhook Event Destination like in example:
+        ```
+        ARN: argo-endpoint
+        Endpoint: http://argo-endpoint
+        Auth Token: your-authorization-token
+        ```
+    5. Save
 
 
 ### Setup bucket events
 Go to:
 1. Your bucket name
-2. (On the left) Events 
-3. Subscribe to Event
-4. Select previously added endpoint
+2. Manage
+3. (On the left) Events 
+4. Subscribe to Event
+5. Select previously added endpoint
     ```
     ARN: argo-endpoint
     prefix: data/dir1/subdir1
     suffix: .extension
     Select Event: PUT
     ```
-5. Save
+6. Save
